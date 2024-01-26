@@ -25,7 +25,6 @@ CONF_FLAGS=(
   -lavfilter 
   -lavformat 
   -lavutil 
-  -lpostproc 
   -lswresample 
   -lswscale 
   -Wno-deprecated-declarations 
