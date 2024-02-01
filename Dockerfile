@@ -151,9 +151,8 @@ COPY --from=zimg-builder $INSTALL_DIR $INSTALL_DIR
 FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
-      --enable-gpl \
-      --enable-libx264 \
-      --enable-libx265 \
+      --disable-gpl \
+      --disable-postproc \
       --enable-libvpx \
       --enable-libmp3lame \
       --enable-libtheora \
@@ -173,8 +172,6 @@ COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
 # libraries to link
 ENV FFMPEG_LIBS \
-      -lx264 \
-      -lx265 \
       -lvpx \
       -lmp3lame \
       -logg \
