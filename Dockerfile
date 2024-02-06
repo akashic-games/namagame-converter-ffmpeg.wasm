@@ -152,6 +152,8 @@ FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
       --disable-gpl \
+      --disable-version3 \
+      --disable-nonfree \
       --disable-postproc \
       --enable-libvpx \
       --enable-libmp3lame \
