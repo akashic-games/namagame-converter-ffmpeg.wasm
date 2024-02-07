@@ -1,3 +1,11 @@
+# namagame-converter-ffmpeg.wasm
+
+A forked repository of [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) to build the library without features released under GPL or non-free licenses.
+
+**The part below here is the original README.md.**
+
+----
+
 <p align="center">
   <a href="#">
     <img alt="ffmpeg.wasm" width="128px" height="128px" src="https://github.com/ffmpegwasm/ffmpeg.wasm/blob/main/apps/website/static/img/logo192.png"></img>
