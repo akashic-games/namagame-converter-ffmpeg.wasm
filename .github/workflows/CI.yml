@@ -75,12 +75,12 @@ jobs:
       with:
         persist-credentials: false
     - name: Download ffmpeg-core
-      uses: actions/download-artifact@cbed621e49e4c01b044d60f6c80ea4ed6328b281 # v2.1.1
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
       with:
         name: ffmpeg-core
         path: packages/core/dist
     - name: Download ffmpeg-core-mt
-      uses: actions/download-artifact@cbed621e49e4c01b044d60f6c80ea4ed6328b281 # v2.1.1
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
       with:
         name: ffmpeg-core-mt
         path: packages/core-mt/dist
