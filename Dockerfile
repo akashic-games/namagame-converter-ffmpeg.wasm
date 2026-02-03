@@ -1,8 +1,4 @@
 # Base emsdk image with environment variables.
-# NOTE:
-# - 元の `docker/dockerfile-upstream:master-labs` は Docker Hub からフロントエンドイメージを取得できない環境だと
-#   `failed to resolve source metadata ... i/o timeout` でビルドが開始できません。
-# - この Dockerfile は labs 専用構文を使っていないため、syntax 指定を外して BuildKit のデフォルトフロントエンドで動かします。
 FROM emscripten/emsdk:3.1.40 AS emsdk-base
 ARG EXTRA_CFLAGS
 ARG EXTRA_LDFLAGS
