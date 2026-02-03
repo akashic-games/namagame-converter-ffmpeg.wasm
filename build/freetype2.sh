@@ -12,4 +12,4 @@ emconfigure ./autogen.sh
 emconfigure ./configure "${CONF_FLAGS[@]}"
 # build apinames manually to prevent it built by emcc
 gcc -o objs/apinames src/tools/apinames.c
-emmake make install -j
+emmake make install -j"${MAKE_JOBS:-1}"

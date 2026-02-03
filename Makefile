@@ -2,6 +2,18 @@ all: dev
 
 MT_FLAGS := -sUSE_PTHREADS -pthread
 
+# コンテナ内の `make -j` 並列度を制御（BuildKit/Rancher Desktop が落ちる場合は 1 へ）
+# 例: MAKE_JOBS=1 make prd
+MAKE_JOBS ?= 1
+
+# `docker buildx build --platform` を外部から指定したい場合に使う。
+# 未指定なら `--platform` 自体を付けない（= buildx のデフォルトに任せる）。
+# 例: DOCKER_PLATFORM=linux/amd64 make prd
+DOCKER_PLATFORM ?=
+
+# buildx 用の platform 引数（DOCKER_PLATFORM が空なら空文字）
+PLATFORM_ARG := $(if $(strip $(DOCKER_PLATFORM)),--platform=$(DOCKER_PLATFORM),)
+
 DEV_ARGS := --progress=plain
 
 DEV_CFLAGS := --profiling
@@ -20,10 +32,12 @@ build:
 	FFMPEG_ST="$(FFMPEG_ST)" \
 	FFMPEG_MT="$(FFMPEG_MT)" \
 		docker buildx build \
+			$(PLATFORM_ARG) \
 			--build-arg EXTRA_CFLAGS \
 			--build-arg EXTRA_LDFLAGS \
 			--build-arg FFMPEG_MT \
 			--build-arg FFMPEG_ST \
+			--build-arg MAKE_JOBS=$(MAKE_JOBS) \
 			-o ./packages/core$(PKG_SUFFIX) \
 			$(EXTRA_ARGS) \
 			.
