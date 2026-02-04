@@ -12,5 +12,5 @@ CONF_FLAGS=(
 )
 emconfigure ./autogen.sh "${CONF_FLAGS[@]}"
 # A hacky to fix "Too many symbolic links" error
-emmake make install -j || true
+emmake make install -j"${MAKE_JOBS:-1}" || true
 mkdir -p $INSTALL_DIR/lib/pkgconfig && cp fribidi.pc $INSTALL_DIR/lib/pkgconfig/

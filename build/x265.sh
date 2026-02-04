@@ -39,17 +39,17 @@ mkdir -p main 10bit 12bit
 
 cd 12bit
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_12BIT[@]}
-emmake make -j
+emmake make -j"${MAKE_JOBS:-1}"
 
 cd ../10bit 
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_10BIT[@]}
-emmake make -j
+emmake make -j"${MAKE_JOBS:-1}"
 
 cd ../main
 ln -sf ../10bit/libx265.a libx265_main10.a
 ln -sf ../12bit/libx265.a libx265_main12.a
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_MAIN[@]}
-emmake make -j
+emmake make -j"${MAKE_JOBS:-1}"
 mv libx265.a libx265_main.a
 
 # Merge static libraries
@@ -61,4 +61,4 @@ ADDLIB libx265_main12.a
 SAVE
 END
 EOF
-emmake make install -j
+emmake make install -j"${MAKE_JOBS:-1}"

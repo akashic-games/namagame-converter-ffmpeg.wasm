@@ -24,4 +24,4 @@ emmake cmake .. \
   -DAOM_EXTRA_C_FLAGS="$CFLAGS" \
   -DAOM_EXTRA_CXX_FLAGS="$CFLAGS" \
   ${CM_FLAGS[@]}
-emmake make install -j
+emmake make install -j"${MAKE_JOBS:-1}"

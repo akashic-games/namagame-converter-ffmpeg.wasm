@@ -1,11 +1,11 @@
-# syntax=docker/dockerfile-upstream:master-labs
-
 # Base emsdk image with environment variables.
 FROM emscripten/emsdk:3.1.40 AS emsdk-base
 ARG EXTRA_CFLAGS
 ARG EXTRA_LDFLAGS
 ARG FFMPEG_ST
 ARG FFMPEG_MT
+ARG MAKE_JOBS=1
+ENV MAKE_JOBS=$MAKE_JOBS
 ENV INSTALL_DIR=/opt
 # We cannot upgrade to n6.0 as ffmpeg bin only supports multithread at the moment.
 ENV FFMPEG_VERSION=n5.1.4

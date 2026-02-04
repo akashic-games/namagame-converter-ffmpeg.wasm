@@ -17,6 +17,6 @@ CONF_FLAGS=(
 )
 
 emconfigure ./configure "${CONF_FLAGS[@]}"
-emmake make install -j
+emmake make install -j"${MAKE_JOBS:-1}"
 # Fix ffmpeg configure error: "libvpx enabled but no supported decoders found"
 emranlib $INSTALL_DIR/lib/libvpx.a
