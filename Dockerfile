@@ -19,11 +19,14 @@ ENV FFMPEG_ST=$FFMPEG_ST
 ENV FFMPEG_MT=$FFMPEG_MT
 RUN apt-get update && \
       apt-get install -y pkg-config autoconf automake libtool ragel dos2unix
+# Configure Git to always use LF line endings (fix for Windows builds)
+RUN git config --global core.autocrlf input
 
 # Build x264
 FROM emsdk-base AS x264-builder
 ENV X264_BRANCH=4-cores
 ADD https://github.com/ffmpegwasm/x264.git#$X264_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/x264.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -32,6 +35,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS x265-builder
 ENV X265_BRANCH=3.4
 ADD https://github.com/ffmpegwasm/x265.git#$X265_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/x265.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -40,6 +44,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS libvpx-builder
 ENV LIBVPX_BRANCH=v1.13.1
 ADD https://github.com/ffmpegwasm/libvpx.git#$LIBVPX_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/libvpx.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -48,6 +53,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS lame-builder
 ENV LAME_BRANCH=master
 ADD https://github.com/ffmpegwasm/lame.git#$LAME_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/lame.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -56,6 +62,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS ogg-builder
 ENV OGG_BRANCH=v1.3.4
 ADD https://github.com/ffmpegwasm/Ogg.git#$OGG_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/ogg.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -65,6 +72,7 @@ FROM emsdk-base AS theora-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
 ENV THEORA_BRANCH=v1.1.1
 ADD https://github.com/ffmpegwasm/theora.git#$THEORA_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/theora.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -73,6 +81,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS opus-builder
 ENV OPUS_BRANCH=v1.3.1
 ADD https://github.com/ffmpegwasm/opus.git#$OPUS_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/opus.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -82,6 +91,7 @@ FROM emsdk-base AS vorbis-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
 ENV VORBIS_BRANCH=v1.3.3
 ADD https://github.com/ffmpegwasm/vorbis.git#$VORBIS_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/vorbis.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -90,6 +100,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS zlib-builder
 ENV ZLIB_BRANCH=v1.2.11
 ADD https://github.com/ffmpegwasm/zlib.git#$ZLIB_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/zlib.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -99,6 +110,7 @@ FROM emsdk-base AS libwebp-builder
 COPY --from=zlib-builder $INSTALL_DIR $INSTALL_DIR
 ENV LIBWEBP_BRANCH=v1.3.2
 ADD https://github.com/ffmpegwasm/libwebp.git#$LIBWEBP_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/libwebp.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -107,6 +119,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS freetype2-builder
 ENV FREETYPE2_BRANCH=VER-2-10-4
 ADD https://github.com/ffmpegwasm/freetype2.git#$FREETYPE2_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/freetype2.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -115,6 +128,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS fribidi-builder
 ENV FRIBIDI_BRANCH=v1.0.9
 ADD https://github.com/fribidi/fribidi.git#$FRIBIDI_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' -o -name 'configure.ac' \) -exec dos2unix {} \;
 COPY build/fribidi.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -123,6 +137,7 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS harfbuzz-builder
 ENV HARFBUZZ_BRANCH=5.2.0
 ADD https://github.com/harfbuzz/harfbuzz.git#$HARFBUZZ_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' -o -name 'configure.ac' \) -exec dos2unix {} \;
 COPY build/harfbuzz.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -134,6 +149,7 @@ COPY --from=fribidi-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=harfbuzz-builder $INSTALL_DIR $INSTALL_DIR
 ENV LIBASS_BRANCH=0.15.0
 ADD https://github.com/libass/libass.git#$LIBASS_BRANCH /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/libass.sh /src/build.sh
 RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
@@ -143,13 +159,16 @@ FROM emsdk-base AS zimg-builder
 ENV ZIMG_BRANCH=release-3.0.5
 RUN apt-get update && apt-get install -y git
 RUN git clone --recursive -b $ZIMG_BRANCH https://github.com/sekrit-twc/zimg.git /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY build/zimg.sh /src/build.sh
+RUN dos2unix /src/build.sh
 RUN bash -x /src/build.sh
 
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
 RUN embuilder build sdl2 sdl2-mt
 ADD https://github.com/FFmpeg/FFmpeg.git#$FFMPEG_VERSION /src
+RUN find /src -type f \( -name '*.sh' -o -name 'configure' -o -name 'autogen.sh' \) -exec dos2unix {} \;
 COPY --from=x264-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=x265-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libvpx-builder $INSTALL_DIR $INSTALL_DIR
