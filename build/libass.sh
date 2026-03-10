@@ -13,4 +13,4 @@ CONF_FLAGS=(
 )
 
 ./autogen.sh && emconfigure ./configure "${CONF_FLAGS[@]}"
-emmake make install -j"${MAKE_JOBS:-1}"
+emmake make install -j${MAKE_JOBS:-1}
