@@ -18,40 +18,40 @@ ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$EM_PKG_CONFIG_PATH
 ENV FFMPEG_ST=$FFMPEG_ST
 ENV FFMPEG_MT=$FFMPEG_MT
 RUN apt-get update && \
-      apt-get install -y pkg-config autoconf automake libtool ragel
+      apt-get install -y pkg-config autoconf automake libtool ragel git
 
 # Build x264
 FROM emsdk-base AS x264-builder
 ENV X264_BRANCH=4-cores
-ADD https://github.com/ffmpegwasm/x264.git#$X264_BRANCH /src
+RUN git clone --depth=1 -b $X264_BRANCH https://github.com/ffmpegwasm/x264.git /src
 COPY build/x264.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build x265
 FROM emsdk-base AS x265-builder
 ENV X265_BRANCH=3.4
-ADD https://github.com/ffmpegwasm/x265.git#$X265_BRANCH /src
+RUN git clone --depth=1 -b $X265_BRANCH https://github.com/ffmpegwasm/x265.git /src
 COPY build/x265.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build libvpx
 FROM emsdk-base AS libvpx-builder
 ENV LIBVPX_BRANCH=v1.13.1
-ADD https://github.com/ffmpegwasm/libvpx.git#$LIBVPX_BRANCH /src
+RUN git clone --depth=1 -b $LIBVPX_BRANCH https://github.com/ffmpegwasm/libvpx.git /src
 COPY build/libvpx.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build lame
 FROM emsdk-base AS lame-builder
 ENV LAME_BRANCH=master
-ADD https://github.com/ffmpegwasm/lame.git#$LAME_BRANCH /src
+RUN git clone --depth=1 -b $LAME_BRANCH https://github.com/ffmpegwasm/lame.git /src
 COPY build/lame.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build ogg
 FROM emsdk-base AS ogg-builder
 ENV OGG_BRANCH=v1.3.4
-ADD https://github.com/ffmpegwasm/Ogg.git#$OGG_BRANCH /src
+RUN git clone --depth=1 -b $OGG_BRANCH https://github.com/ffmpegwasm/Ogg.git /src
 COPY build/ogg.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -59,14 +59,14 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS theora-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
 ENV THEORA_BRANCH=v1.1.1
-ADD https://github.com/ffmpegwasm/theora.git#$THEORA_BRANCH /src
+RUN git clone --depth=1 -b $THEORA_BRANCH https://github.com/ffmpegwasm/theora.git /src
 COPY build/theora.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build opus
 FROM emsdk-base AS opus-builder
 ENV OPUS_BRANCH=v1.3.1
-ADD https://github.com/ffmpegwasm/opus.git#$OPUS_BRANCH /src
+RUN git clone --depth=1 -b $OPUS_BRANCH https://github.com/ffmpegwasm/opus.git /src
 COPY build/opus.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -74,14 +74,14 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS vorbis-builder
 COPY --from=ogg-builder $INSTALL_DIR $INSTALL_DIR
 ENV VORBIS_BRANCH=v1.3.3
-ADD https://github.com/ffmpegwasm/vorbis.git#$VORBIS_BRANCH /src
+RUN git clone --depth=1 -b $VORBIS_BRANCH https://github.com/ffmpegwasm/vorbis.git /src
 COPY build/vorbis.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build zlib
 FROM emsdk-base AS zlib-builder
 ENV ZLIB_BRANCH=v1.2.11
-ADD https://github.com/ffmpegwasm/zlib.git#$ZLIB_BRANCH /src
+RUN git clone --depth=1 -b $ZLIB_BRANCH https://github.com/ffmpegwasm/zlib.git /src
 COPY build/zlib.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -89,28 +89,28 @@ RUN bash -x /src/build.sh
 FROM emsdk-base AS libwebp-builder
 COPY --from=zlib-builder $INSTALL_DIR $INSTALL_DIR
 ENV LIBWEBP_BRANCH=v1.3.2
-ADD https://github.com/ffmpegwasm/libwebp.git#$LIBWEBP_BRANCH /src
+RUN git clone --depth=1 -b $LIBWEBP_BRANCH https://github.com/ffmpegwasm/libwebp.git /src
 COPY build/libwebp.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build freetype2
 FROM emsdk-base AS freetype2-builder
 ENV FREETYPE2_BRANCH=VER-2-10-4
-ADD https://github.com/ffmpegwasm/freetype2.git#$FREETYPE2_BRANCH /src
+RUN git clone --depth=1 -b $FREETYPE2_BRANCH https://github.com/ffmpegwasm/freetype2.git /src
 COPY build/freetype2.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build fribidi
 FROM emsdk-base AS fribidi-builder
 ENV FRIBIDI_BRANCH=v1.0.9
-ADD https://github.com/fribidi/fribidi.git#$FRIBIDI_BRANCH /src
+RUN git clone --depth=1 -b $FRIBIDI_BRANCH https://github.com/fribidi/fribidi.git /src
 COPY build/fribidi.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build harfbuzz
 FROM emsdk-base AS harfbuzz-builder
 ENV HARFBUZZ_BRANCH=5.2.0
-ADD https://github.com/harfbuzz/harfbuzz.git#$HARFBUZZ_BRANCH /src
+RUN git clone --depth=1 -b $HARFBUZZ_BRANCH https://github.com/harfbuzz/harfbuzz.git /src
 COPY build/harfbuzz.sh /src/build.sh
 RUN bash -x /src/build.sh
 
@@ -120,14 +120,13 @@ COPY --from=freetype2-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=fribidi-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=harfbuzz-builder $INSTALL_DIR $INSTALL_DIR
 ENV LIBASS_BRANCH=0.15.0
-ADD https://github.com/libass/libass.git#$LIBASS_BRANCH /src
+RUN git clone --depth=1 -b $LIBASS_BRANCH https://github.com/libass/libass.git /src
 COPY build/libass.sh /src/build.sh
 RUN bash -x /src/build.sh
 
 # Build zimg
 FROM emsdk-base AS zimg-builder
 ENV ZIMG_BRANCH=release-3.0.5
-RUN apt-get update && apt-get install -y git
 RUN git clone --recursive -b $ZIMG_BRANCH https://github.com/sekrit-twc/zimg.git /src
 COPY build/zimg.sh /src/build.sh
 RUN bash -x /src/build.sh
@@ -135,7 +134,7 @@ RUN bash -x /src/build.sh
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
 RUN embuilder build sdl2 sdl2-mt
-ADD https://github.com/FFmpeg/FFmpeg.git#$FFMPEG_VERSION /src
+RUN git clone --depth=1 -b $FFMPEG_VERSION https://github.com/FFmpeg/FFmpeg.git /src
 COPY --from=x264-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=x265-builder $INSTALL_DIR $INSTALL_DIR
 COPY --from=libvpx-builder $INSTALL_DIR $INSTALL_DIR
