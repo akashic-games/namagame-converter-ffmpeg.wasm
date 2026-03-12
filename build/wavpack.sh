@@ -16,4 +16,4 @@ CONF_FLAGS=(
   --disable-maintainer-mode
 )
 CFLAGS=$CFLAGS emconfigure ./autogen.sh "${CONF_FLAGS[@]}"
-emmake make install -j"${MAKE_JOBS:-1}"
+emmake make install -j${MAKE_JOBS:-1}

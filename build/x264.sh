@@ -13,4 +13,4 @@ CONF_FLAGS=(
 )
 
 emconfigure ./configure "${CONF_FLAGS[@]}"
-emmake make install-lib-static -j"${MAKE_JOBS:-1}"
+emmake make install-lib-static -j${MAKE_JOBS:-1}
