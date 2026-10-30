@@ -1,5 +1,5 @@
 # Base emsdk image with environment variables.
-FROM emscripten/emsdk:3.1.40 AS emsdk-base
+FROM emscripten/emsdk:3.1.40@sha256:c1e807a6e03ac5bd5b37bae2ace3c46c08579e2ddeb951037a3b8dac7067f2cc AS emsdk-base
 ARG EXTRA_CFLAGS
 ARG EXTRA_LDFLAGS
 ARG FFMPEG_ST
